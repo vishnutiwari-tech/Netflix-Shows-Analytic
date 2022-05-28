@@ -1,10 +1,96 @@
+{% extends 'layout.html' %}
+
+
 {% block body %}
-<div class="chart" id="fig1"></div>
 
 
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">Plot Description</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">Plot Description</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">Plot Description</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">Plot Description</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">Plot Description</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">Plot Description</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-    var graphs = {{ figure_data | safe}};
-    // var config = {"displaylogo": FALSE, 'modeBarButtonsToAdd': ['drawclosedpath', 'eraseshape']};
-    Plotly.plot('fig1', graphs, {});
+    
+    
+    Plotly.plot('fig1', {{ figure_data1 | safe}}, {});
+    Plotly.plot('fig2', {{ figure_data2 | safe}}, {});
+     Plotly.plot('fig3', {{ figure_data3 | safe}}, {});
+     Plotly.plot('fig4', {{ figure_data4 | safe}}, {});
+     Plotly.plot('fig5', {{ figure_data5 | safe}}, {});
+     Plotly.plot('fig6', {{ figure_data6 | safe}}, {});
+</script>
 </script>
 {% endblock %}
