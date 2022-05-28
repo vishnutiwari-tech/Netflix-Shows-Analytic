@@ -24,7 +24,7 @@ def analysis():
     figure = json.dumps(getShowType(data), cls=plotly.utils.PlotlyJSONEncoder)
     return render_template('analysis.html', figure_data = figure)
 
-
+    
 
 
 if __name__ == '__main__':
