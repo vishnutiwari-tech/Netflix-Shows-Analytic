@@ -2,6 +2,7 @@ from folium import Figure
 from matplotlib import figure
 from matplotlib.animation import MovieWriter, MovieWriterRegistry
 from matplotlib.backend_bases import FigureManagerBase
+from matplotlib.image import FigureImage
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -10,6 +11,23 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
+def getMovieShow(data):
+    movies = data[data['Type']=='Movie']
+    tv_show = data[data['Type']=='TV Show']
+
+    return movies, tv_show
+
+def country_table(data, country:str,content_type='movie' ):
+    movies, tv_show = getMovieShow(data)
+    if content_type== 'movie':
+        sort_country = movies[movies['country']== country]
+        table= sort_country[['title','release_year']].sort_values(by='release_year',ascending=False).reset_index(drop=True)
+        return table
+    if content_type == 'TV':
+        sort_country= tv_show[tv_show['country']== country]
+        table = sort_country[['title','release_year']].sort_values(by='release_year',ascending=False).reset_index(drop=True)
+        
+        return table
 
 def getShowType(data):
     fig = px.histogram(data_frame=data, x='Type', color='Type', template='plotly_dark', color_discrete_sequence=['#f47c64', 'darkcyan'],
@@ -332,74 +350,76 @@ def ratingAnalysis(data):
 
     return fig
 
+def country_wise_count(df):
+    temp_df = df['country'].value_counts().reset_index()
+    temp_df.rename(columns= {'index':'country','country':'movies_count'},inplace=True)
+    return temp_df
 
 def countryWiseMovies(data):
-    def country_wise_count(df):
-        temp_df = df['country'].value_counts().reset_index()
-        temp_df.rename(columns={'index': 'country',
-                       'country': 'movies_count'}, inplace=True)
-        return temp_df
+    
+    movies, shows = getMovieShow(data)
 
-        top10_country_movies = movies['country'].value_counts(
-            ascending=True).reset_index().tail(10)
-        top10_country_movies.rename(
-            columns={'index': 'country', 'country': 'movies_count'}, inplace=True)
+    top10_country_movies = movies['country'].value_counts(
+        ascending=True).reset_index().tail(10)
+    top10_country_movies.rename(
+        columns={'index': 'country', 'country': 'movies_count'}, inplace=True)
 
-        country_wise_movies = country_wise_count(movies)
-        country_wise_movies
-        fig1 = go.Figure(go.Table(columnorder=[1, 2, 3],
-                                  columnwidth=[30, 20],
-                                  header=dict(values=['<b>country<b>', '<b>movies<b>'],
-                                              line_color='black', font=dict(color='black', size=15), height=40,
-                                              fill_color='#f47c64',
-                                              align=['left', 'center']),
-                                  cells=dict(values=[country_wise_movies.country, country_wise_movies.movies_count],
-                                             fill_color='#ffdac4', line_color='grey',
-                                             font=dict(color='black',
-                                                       family="Lato", size=15),
-                                             align='left')))
+    country_wise_movies = country_wise_count(movies)
+    country_wise_movies
+    fig1 = go.Figure(go.Table(columnorder=[1, 2, 3],
+                                columnwidth=[30, 20],
+                                header=dict(values=['<b>country<b>', '<b>movies<b>'],
+                                            line_color='black', font=dict(color='black', size=15), height=40,
+                                            fill_color='#f47c64',
+                                            align=['left', 'center']),
+                                cells=dict(values=[country_wise_movies.country, country_wise_movies.movies_count],
+                                            fill_color='#ffdac4', line_color='grey',
+                                            font=dict(color='black',
+                                                    family="Lato", size=15),
+                                            align='left')))
 
-        fig1.update_layout(width=700, height=500, title_x=0.45, font_color='white',
-                           title={
-                               'text': "<b style:'color:blue;'>all countries with movie count</b>", 'font': {'size': 30}},
-                           title_font_family="Times New Roman", margin=dict(l=130, r=200, t=70, b=30),
-                           paper_bgcolor='black')
-        # fig1.show()
-        fig = px.bar(data_frame=top10_country_movies, x='movies_count', y='country', orientation='h', template='plotly_dark', height=500, width=800,
-                     #color = top_15_genres.index,
-                     color_discrete_sequence=["#f47c64"])
-        fig.update_traces(marker_line_color='darkorange',
-                          marker_line_width=2.5, opacity=1.0)
-        fig.update_xaxes(showgrid=False)
-        fig.update_traces(showlegend=False)
-        fig.update_yaxes(tickcolor='grey', ticklen=10,
-                         ticks="outside", tickwidth=2)
-        fig.update_layout(margin=dict(l=0, r=0, t=70, b=80),
-                          autosize=True, width=700,
-                          title={'text': "<b style:'color:blue;'>Top 10 countries with movie count</b>", 'font': {'size': 30}}, title_x=0.18,
+    fig1.update_layout(width=700, height=500, title_x=0.45, font_color='white',
+                        title={
+                            'text': "<b style:'color:blue;'>all countries with movie count</b>", 'font': {'size': 30}},
+                        title_font_family="Times New Roman", margin=dict(l=130, r=200, t=70, b=30),
+                        paper_bgcolor='black')
+    # fig1.show()
+    fig = px.bar(data_frame=top10_country_movies, x='movies_count', y='country', orientation='h', template='plotly_dark', height=500, width=800,
+                    #color = top_15_genres.index,
+                    color_discrete_sequence=["#f47c64"])
+    fig.update_traces(marker_line_color='darkorange',
+                        marker_line_width=2.5, opacity=1.0)
+    fig.update_xaxes(showgrid=False)
+    fig.update_traces(showlegend=False)
+    fig.update_yaxes(tickcolor='grey', ticklen=10,
+                        ticks="outside", tickwidth=2)
+    fig.update_layout(margin=dict(l=0, r=0, t=70, b=80),
+                        autosize=True, width=700,
+                        title={'text': "<b style:'color:blue;'>Top 10 countries with movie count</b>", 'font': {'size': 30}}, title_x=0.18,
 
-                          title_font_family="Times New Roman",
-                          title_font_color="white",
-                          font_color='white',
+                        title_font_family="Times New Roman",
+                        title_font_color="white",
+                        font_color='white',
 
-                          xaxis_title={
-                              'text': "<b style:'color:blue;'>Movies</b>", 'font': {'size': 16}, 'standoff': 20},
-                          yaxis_title={'text': "<b style:'color:blue';></b>",
-                                       'font': {'size': 15}},
-                          # paper_bgcolor='black',
-                          plot_bgcolor='rgba(0,0,0,0)')
+                        xaxis_title={
+                            'text': "<b style:'color:blue;'>Movies</b>", 'font': {'size': 16}, 'standoff': 20},
+                        yaxis_title={'text': "<b style:'color:blue';></b>",
+                                    'font': {'size': 15}},
+                        # paper_bgcolor='black',
+                        plot_bgcolor='rgba(0,0,0,0)')
 
-        return fig
+    return fig
+
+def country_wise_count(df):
+    temp_df = df['country'].value_counts().reset_index()
+    temp_df.rename(columns={'index': 'country',
+                    'country': 'movies_count'}, inplace=True)
+    return temp_df
 
 
 def countryWiseShows(data):
-    def country_wise_count(df):
-        temp_df = df['country'].value_counts().reset_index()
-        temp_df.rename(columns={'index': 'country',
-                       'country': 'movies_count'}, inplace=True)
-        return temp_df
 
-
+        movies, tv_show = getMovieShow(data)
         tv_show = data[data['Type'] == 'TV Show']
         top10_country_tv_shows = tv_show['country'].value_counts(
         ascending=True).reset_index().tail(10)
@@ -450,3 +470,135 @@ def countryWiseShows(data):
         fig.update_yaxes(tickcolor='grey', ticklen=10, ticks="outside", tickwidth=2)
 
         return fig
+
+def releaseYearData(data):
+    
+    movies, tv_show = getMovieShow(data)
+
+    
+    release_year_data=data.groupby('Type')['release_year'].value_counts().sort_index().unstack().fillna(0).T
+    release_year_data['Movie'] = release_year_data['Movie'].apply(int)
+    release_year_data['TV Show'] = release_year_data['TV Show'].apply(int)
+    type_data = data.groupby('Type')['year_added'].value_counts().sort_index().unstack().fillna(0).T
+    type_data['Movie'] = type_data['Movie'].apply(int)
+    type_data['TV Show'] = type_data['TV Show'].apply(int)
+        
+    fig = go.Figure()
+    x1 = type_data.index
+    x2 =release_year_data.loc[2008:].index
+    y1=type_data['Movie']
+    y2=type_data['TV Show']
+    y3=release_year_data.loc[2008:]['Movie']
+    y4=release_year_data.loc[2008:]['TV Show']
+    # Add traces
+
+    fig.add_trace(go.Scatter(x=x1, y=y1,
+                        mode='lines+markers',
+                        name='movie added',marker=dict(color="purple")))
+    fig.add_trace(go.Scatter(x=x1, y=y2,
+                        mode='lines+markers',line=dict(color='darkblue', width=2, dash='solid'),
+                        name='tv show added',marker=dict(color="blue")))
+    fig.add_trace(go.Scatter(x=x2, y=y3,line=dict(dash='solid'),
+                        mode='lines+markers',
+                        name='movie release  ',marker=dict(color='#f47c64')))
+    fig.add_trace(go.Scatter(x=x2, y=y4,
+                        mode='lines+markers',line=dict(color='darkcyan', width=2, dash='solid'),
+                        name='tv show release   ',marker=dict(color="cyan")))
+
+    fig.update_layout(legend_orientation="h",template='plotly_dark',
+                    legend=dict(x=0, y=1, traceorder="normal"),
+                    title={'text':"release year vs added to netflix",'font':{'size':20}},
+                    xaxis_title="Year",
+                    #paper_bgcolor='#edeeee',
+                    # plot_bgcolor='#edeeee',
+                    yaxis_title="count ",width=800,height=500,
+                    margin=dict(l=50, r=30, t=70, b=40))
+    fig.update_xaxes(showgrid=True)
+    fig.update_yaxes(showgrid=True)
+
+    return fig
+
+def addedPerYear(data):
+    movies, tv_show = getMovieShow(data)
+    release_year_total = data['release_year'].value_counts().sort_index()
+    release_year_total
+    release_year_data=data.groupby('Type')['release_year'].value_counts().sort_index().unstack().fillna(0).T
+    release_year_data['Movie'] = release_year_data['Movie'].apply(int)
+    release_year_data['TV Show'] = release_year_data['TV Show'].apply(int)
+
+    x= release_year_total.index
+    y0 = release_year_total
+    fig = go.Figure()
+    x1 =release_year_data.index
+    y1=release_year_data['Movie']
+    y2=release_year_data['TV Show']
+    # Add traces
+    fig.add_trace(go.Scatter(x=x, y=y0,line=dict(color='grey', width=4, dash='solid'),
+                        mode='lines+markers',
+                        name='Total',marker=dict(color="grey")))
+    fig.add_trace(go.Scatter(x=x1, y=y1,
+                        mode='lines+markers',
+                        name='movie',marker=dict(color="#f47c64")))
+    fig.add_trace(go.Scatter(x=x1, y=y2,
+                        mode='lines+markers',line=dict(color='darkcyan', width=2),
+                        name='tv show'))
+    fig.update_layout(legend_orientation="h",template='plotly_dark',
+                    legend=dict(x=0, y=1, traceorder="normal"),
+                    
+                    xaxis_title="Year",
+                    title={'text':'Yearwise Movies and TV shows Released ','font':{'size':19}},
+                    #paper_bgcolor='#edeeee',
+                    # plot_bgcolor='#edeeee',
+                    yaxis_title="count ",height=500,
+                    margin=dict(l=50, r=30, t=70, b=40))
+    fig.add_vrect(x0=1920,x1=2000, line_width=0,fillcolor="purple", opacity=0.1,annotation_text="netfilx does not interested in adding old movies and shows to their library",
+                annotation_position="right",annotation=dict(font_size=17, font_family="Times New Roman",bgcolor='black'))
+    fig.update_xaxes(showgrid=True)
+    fig.update_yaxes(showgrid=True)
+
+    return fig
+
+def monthWiseContent(data):
+    movies, tv_show = getMovieShow(data)
+
+    fig = px.histogram(data_frame=data, x= 'month_added',color ='Type',height= 500,template='plotly_dark',color_discrete_sequence=['#f47c64','darkcyan'])
+    fig.update_xaxes(categoryorder='array', categoryarray= [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+    fig.update_traces( marker_line_color='black',
+                    marker_line_width=2.5, opacity=0.9)
+    fig.update_layout(template='plotly_dark',legend_orientation= 'h',
+                    legend=dict(x=0, y=1, traceorder="normal"),
+                    title={'text':"Monthwise content  added to netflix",'font':{'size':25}},
+                    xaxis_title="",height= 500,
+        
+        #font_color = 'darkslategrey',
+                    #paper_bgcolor='#edeeee',
+                    # plot_bgcolor='#edeeee',
+                    yaxis_title=" "
+                    ,margin=dict(l=50, r=30, t=70, b=0)
+                    )
+    return fig
+
+
+def shortFilms(data):
+    movies, tv_show = getMovieShow(data)
+    movies["duration"] = movies.duration.str.replace(" min",'').astype(int)
+    print(movies["duration"])
+    shortfilm=movies[movies["duration"] <=40]
+    fig=go.Figure(go.Table( columnorder = [1,2,3],
+        columnwidth = [25,10],
+            header=dict(values=['<b> Title<b>','<b>Duration<br>(minutes)<b>'],
+                        line_color='black',font=dict(color='black',size= 15),height=40,
+                        fill_color='#dd571c',
+                        align=['left','center']),
+                cells=dict(values=[shortfilm.title,shortfilm.duration],
+                    fill_color='#ffdac4',line_color='grey',
+                        font=dict(color='black', family="Lato", size=15),
+                    align='left')))
+    fig.update_layout(width=600, title ={'text': "<b style:'color:red;'>Shortfilms on Netflix</b>", 'font': {'size': 25}},title_x=0.5
+                    )
+    return fig
+    
+
+
+
+

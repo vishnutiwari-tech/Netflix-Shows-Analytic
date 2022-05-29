@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from folium import Figure
 import pandas as pd
 import json
-from visualizer import contentAfter2015,  countryWiseMovies, countryWiseShows,  genresAnalysis,  getShowType, monthWiseAnalysis, ratingAnalysis, releaseYear, riseOfNetflix, showsSeasonWise, topDirectors, yearWiseRelease
+from visualizer import addedPerYear, contentAfter2015,  countryWiseMovies, countryWiseShows,  genresAnalysis,  getShowType, monthWiseAnalysis, monthWiseContent, ratingAnalysis, releaseYear, releaseYearData, riseOfNetflix, shortFilms, showsSeasonWise, topDirectors, yearWiseRelease
 import plotly
 
 app = Flask(__name__)
@@ -47,6 +47,20 @@ def analysis():
 
     figure12 = json.dumps(countryWiseShows(data), cls=plotly.utils.PlotlyJSONEncoder)
 
+    figure13 = json.dumps(releaseYearData(data), cls=plotly.utils.PlotlyJSONEncoder)
+
+    figure14 = json.dumps(addedPerYear(data), cls=plotly.utils.PlotlyJSONEncoder)
+
+    figure15 = json.dumps(monthWiseContent(data), cls=plotly.utils.PlotlyJSONEncoder)
+
+    figure16 = json.dumps(shortFilms(data), cls=plotly.utils.PlotlyJSONEncoder)
+
+    #figure17 = json.dumps((data), cls=plotly.utils.PlotlyJSONEncoder)
+
+
+
+
+
 
 
 
@@ -61,7 +75,11 @@ def analysis():
                                             figure_data9 = figure9,
                                             figure_data10 = figure10,
                                             figure_data11 = figure11,
-                                            figure_data12 = figure12)
+                                            figure_data12 = figure12,
+                                            figure_data13 = figure13,
+                                            figure_data14 = figure14,
+                                            figure_data15 = figure15,
+                                            figure_data16 = figure16)
                                             
 
     
