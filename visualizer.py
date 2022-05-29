@@ -1,5 +1,6 @@
 from folium import Figure
 from matplotlib import figure
+from matplotlib.animation import MovieWriter, MovieWriterRegistry
 from matplotlib.backend_bases import FigureManagerBase
 import pandas as pd
 import plotly.express as px
@@ -447,3 +448,5 @@ def countryWiseShows(data):
         fig.update_xaxes(showgrid=False)
         fig.update_traces(showlegend=False)
         fig.update_yaxes(tickcolor='grey', ticklen=10, ticks="outside", tickwidth=2)
+
+        return fig
