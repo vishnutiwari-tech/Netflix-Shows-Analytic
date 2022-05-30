@@ -8,6 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import seaborn as sns
+from plotly.subplots import make_subplots
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -597,8 +598,127 @@ def shortFilms(data):
     fig.update_layout(width=600, title ={'text': "<b style:'color:red;'>Shortfilms on Netflix</b>", 'font': {'size': 25}},title_x=0.5
                     )
     return fig
+
+def year_title(data,header_color= '#f47c64',cell_color='#ffdac4'):
+    Table= go.Table( columnorder = [1,2,3],
+      columnwidth = [25,20],
+        header=dict(values=['<b>Title<b>','<b>Date <b>'],
+                    line_color='black',font=dict(color='black',size= 15),height=40,
+                    fill_color=header_color,
+                    align=['left','center']),
+            cells=dict(values=[data.title,data.date_added],
+                   fill_color=cell_color,line_color='grey',
+                       font=dict(color='black', family="Lato", size=15),
+                   align='left'))
+    return Table    
+
+def moviesByYear(data):
+    movies, tv_show = getMovieShow(data)
+    upto_2014=movies[(movies['year_added']!=2015) &(movies['year_added']!=2016) &(movies['year_added']!=2017) &(movies['year_added']!=2018) &(movies['year_added']!=2019) & (movies['year_added']!=2020) &(movies['year_added']!=2021) ]
+    upto_2014=upto_2014[['title','year_added']].sort_values(by='year_added').reset_index()
+    upto_2014
+    year_2015= movies[movies['year_added']==2015]
+    year_2016= movies[movies['year_added']==2016]
+    year_2017= movies[movies['year_added']==2017]
+    year_2018= movies[movies['year_added']==2018]
+    year_2019= movies[movies['year_added']==2019]
+    year_2020= movies[movies['year_added']==2020]
+    year_2021= movies[movies['year_added']==2021]
+    fig = make_subplots(subplot_titles=['movies added till 2014:Total 45 Movies','2015:Total 56 Movies',
+                                    '2016:Total 251 Movies','2017::Total 836 Movies',
+                                    '2018:Total 1237 Movies','2019:Total 1424 Movies',
+                                    '2020:Total 1284 Movies','2021::Total 56 Movies'],
+        rows=4 ,cols=2,
+        shared_xaxes=True,
+        #olumn_titles=['movie','2015','2016','2017'],
+        vertical_spacing=0.04,horizontal_spacing=0.03,
+    specs=[[{"type": "table"},{"type": "table"}],
+            [ {"type": "table"},{"type": "table"}],
+            [ {"type": "table"},{"type": "table"}],
+            [ {"type": "table"},{"type": "table"}]]
+        
+            
+    )
+    fig.add_trace(go.Table( columnorder = [1,2,3],
+        columnwidth = [25,20],
+            header=dict(values=['<b> Title<b>','<b>Year<b>'],
+                        line_color='black',font=dict(color='black',size= 15),height=40,
+                        fill_color='#f47c64',
+                        align=['left','center']),
+                cells=dict(values=[upto_2014.title,upto_2014.year_added],
+                    fill_color='#ffdac4',line_color='grey',
+                        font=dict(color='black', family="Lato", size=15),
+                    align='left')),row=1,col=1)
+
+    fig.add_trace(year_title(year_2015),row=1,col=2)
+    fig.add_trace(year_title(year_2016),row=2,col=1)
+    fig.add_trace(year_title(year_2017),row=2,col=2)
+    fig.add_trace(year_title(year_2018),row=3,col=1)
+    fig.add_trace(year_title(year_2019),row=3,col=2)
+    fig.add_trace(year_title(year_2020),row=4,col=1)
+    fig.add_trace(year_title(year_2021),row=4,col=2)
+
+    fig.update_layout( width=800,height=2000,
+                    title ={'text': "<b style:'color:blue;'>Movies added on Netflix Yearwise</b>", 'font': {'size': 30}},title_x=0.25,
+        
+        title_font_family="Times New Roman",
+        title_font_color="darkblue")#,margin=dict(l=0, r=0, t=70, b=40))
     
+    return fig
 
 
+def showsByYear(data):
+    movies, tv_show = getMovieShow(data)
 
+    upto_2014_TV=tv_show[(tv_show['year_added']!=2015) &(tv_show['year_added']!=2016) &(tv_show['year_added']!=2017) &(tv_show['year_added']!=2018) &(tv_show['year_added']!=2019) & (tv_show['year_added']!=2020) &(tv_show['year_added']!=2021) ]
+    upto_2014_TV=upto_2014_TV[['title','year_added']].sort_values(by='year_added').reset_index()
+    upto_2014_TV
+    year_2015_TV= tv_show[tv_show['year_added']==2015]
+    year_2016_TV= tv_show[tv_show['year_added']==2016]
+    year_2017_TV= tv_show[tv_show['year_added']==2017]
+    year_2018_TV= tv_show[tv_show['year_added']==2018]
+    year_2019_TV= tv_show[tv_show['year_added']==2019]
+    year_2020_TV= tv_show[tv_show['year_added']==2020]
+    year_2021_TV= tv_show[tv_show['year_added']==2021]
+    
+    fig = make_subplots(subplot_titles=['TV shows added till 2014:Total 11 TV shows','2015:Total 26 TV shows',
+                                        '2016:Total 175 TV shows','2017::Total 349 TV shows',
+                                        '2018:Total 411 TV shows','2019:Total 592 TV shows',
+                                        '2020:Total 595 TV shows','2021::Total 505 TV shows'],
+        rows=4 ,cols=2,
+        shared_xaxes=True,
+        #olumn_titles=['movie','2015','2016','2017'],
+        vertical_spacing=0.04,horizontal_spacing=0.03,
+    specs=[[{"type": "table"},{"type": "table"}],
+            [ {"type": "table"},{"type": "table"}],
+            [ {"type": "table"},{"type": "table"}],
+            [ {"type": "table"},{"type": "table"}]]
+        
+            
+    )
+    fig.add_trace(go.Table( columnorder = [1,2,3],
+        columnwidth = [25,20],
+            header=dict(values=['<b> Title<b>','<b>Year<b>'],
+                        line_color='black',font=dict(color='black',size= 15),height=40,
+                        fill_color='cyan',
+                        align=['left','center']),
+                cells=dict(values=[upto_2014_TV.title,upto_2014_TV.year_added],
+                    fill_color='lightcyan',line_color='grey',
+                        font=dict(color='black', family="Lato", size=15),
+                    align='left')),row=1,col=1)
 
+    fig.add_trace(year_title(year_2015_TV,header_color='cyan',cell_color='lightcyan'),row=1,col=2)
+    fig.add_trace(year_title(year_2016_TV,header_color='cyan',cell_color='lightcyan'),row=2,col=1)
+    fig.add_trace(year_title(year_2017_TV,header_color='cyan',cell_color='lightcyan'),row=2,col=2)
+    fig.add_trace(year_title(year_2018_TV,header_color='cyan',cell_color='lightcyan'),row=3,col=1)
+    fig.add_trace(year_title(year_2019_TV,header_color='cyan',cell_color='lightcyan'),row=3,col=2)
+    fig.add_trace(year_title(year_2020_TV,header_color='cyan',cell_color='lightcyan'),row=4,col=1)
+    fig.add_trace(year_title(year_2021_TV,header_color='cyan',cell_color='lightcyan'),row=4,col=2)
+
+    fig.update_layout( width=800,height=2000,
+                    title ={'text': "<b style:'color:blue;'>TV shows added on Netflix Yearwise</b>", 'font': {'size': 30}},title_x=0.25,
+        
+        title_font_family="Times New Roman",
+        title_font_color="darkblue")#,margin=dict(l=0, r=0, t=70, b=40))
+
+    return fig

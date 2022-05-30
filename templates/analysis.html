@@ -206,6 +206,30 @@
             </div>
         </div>
     </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">This table shows the details of the movies added on Netflix yearwise. </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig17"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-muted">This table shows the details of the TV shows added on Netflix yearwise. </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig18"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -229,7 +253,8 @@
     Plotly.plot('fig14', {{ figure_data14 | safe}}, {});
     Plotly.plot('fig15', {{ figure_data15 | safe}}, {});
     Plotly.plot('fig16', {{ figure_data16 | safe}}, {});
-    //  Plotly.plot('fig17', {{ figure_data17 | safe}}, {});
+    Plotly.plot('fig17', {{ figure_data17 | safe}}, {});
+    Plotly.plot('fig18', {{ figure_data18 | safe}}, {});
 </script>
 </script>
 </script>
