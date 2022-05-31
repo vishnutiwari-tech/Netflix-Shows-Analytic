@@ -11,10 +11,8 @@ app = Flask(__name__)
 
 data = pd.read_csv('datasets/netflix_data.csv')
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
+@app.route('/')
 @app.route('/home')
 def home():
     return render_template('home.html')
