@@ -1,23 +1,261 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-</head>
-<body>
-    
-
-    <div class="chart" id="fig1"></div>
+{% extends 'layout.html' %}
 
 
-    <script>
-            var graphs = {{figure_data | safe}};
-        // var config = {"displaylogo": FALSE, 'modeBarButtonsToAdd': ['drawclosedpath', 'eraseshape']};
-        Plotly.plot('fig1', graphs, {});
-    </script>
+{% block body %}
 
-</body>
-</html>
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot shows the total number of movies and TV shows available on Netflix
+                    </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart shows the total number of contents added per year.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart shows the rise of Netflix after 2015.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart shows total content added on Netflix and the year they were
+                        released.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart shows the comparison between movies,shows and total content added
+                        on Netflix.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot describes the total contents added monthwise. </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot shows the season analysis of the shows.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig7"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart shows the top 15 generes available on the Netflix.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig8"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot describes the top 15 directors with most number of contents.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig9"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart categorize the contents on the basis of age group.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig10"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot shows the top 10 countries with most number of movies on Netflix.
+                    </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig11"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot shows the top 10 countries with most number of TV shows on Netflix.
+                    </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig12"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart describes the release year of contents and total number of
+                        contents added in the same year.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig13"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This chart shows total content added on Netflix and the year they were
+                        released.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig14"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This plot shows the comparison between the number of movies and shows added
+                        on Netflix.</h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig15"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This table shows the name of the shorts films available on Netflix with their duration. </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig16"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This table shows the details of the movies added on Netflix yearwise. </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig17"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <h2 class="text-success">This table shows the details of the TV shows added on Netflix yearwise. </h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="chart" id="fig18"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+
+
+    Plotly.plot('fig1', {{ figure_data1 | safe}}, {});
+    Plotly.plot('fig2', {{ figure_data2 | safe}}, {});
+    Plotly.plot('fig3', {{ figure_data3 | safe}}, {});
+    Plotly.plot('fig4', {{ figure_data4 | safe}}, {});
+    Plotly.plot('fig5', {{ figure_data5 | safe}}, {});
+    Plotly.plot('fig6', {{ figure_data6 | safe}}, {});
+    Plotly.plot('fig7', {{ figure_data7 | safe}}, {});
+    Plotly.plot('fig8', {{ figure_data8 | safe}}, {});
+    Plotly.plot('fig9', {{ figure_data9 | safe}}, {});
+    Plotly.plot('fig10', {{ figure_data10 | safe}}, {});
+    Plotly.plot('fig11', {{ figure_data11 | safe}}, {});
+    Plotly.plot('fig12', {{ figure_data12 | safe}}, {});
+    Plotly.plot('fig13', {{ figure_data13 | safe}}, {});
+    Plotly.plot('fig14', {{ figure_data14 | safe}}, {});
+    Plotly.plot('fig15', {{ figure_data15 | safe}}, {});
+    Plotly.plot('fig16', {{ figure_data16 | safe}}, {});
+    Plotly.plot('fig17', {{ figure_data17 | safe}}, {});
+    Plotly.plot('fig18', {{ figure_data18 | safe}}, {});
+</script>
+</script>
+</script>
+{% endblock %}
