@@ -21,7 +21,6 @@ def home():
 @app.route('/analysis')
 def analysis():
     figure1 = json.dumps(getShowType(data), cls=plotly.utils.PlotlyJSONEncoder)
-
     
     figure2 = json.dumps(riseOfNetflix(data), cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -58,13 +57,6 @@ def analysis():
     figure18 = json.dumps(showsByYear(data), cls=plotly.utils.PlotlyJSONEncoder)
 
 
-
-
-
-
-
-
-
     return render_template('analysis.html', figure_data1 = figure1,
                                             figure_data2 = figure2,
                                             figure_data3 = figure3,
@@ -83,11 +75,6 @@ def analysis():
                                             figure_data16 = figure16,
                                             figure_data17 = figure17,
                                             figure_data18 = figure18)
-                                            
-
-    
-    
-
-
+                                    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
